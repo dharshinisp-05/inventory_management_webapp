@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3 fade-up">
+    <h3 class="m-0">Movements</h3>
+    <a class="btn btn-primary hover-raise" href="{{ url_for('movement_new') }}"><i class="bi bi-plus"></i> Add Movement</a>
+  </div>
+  <div class="card p-3 fade-up hover-raise">
+    <div class="table-responsive">
+      <table class="table table-sm table-hover align-middle">
+        <thead><tr><th>ID</th><th>Time</th><th>Product</th><th>From</th><th>To</th><th>Qty</th></tr></thead>
+        <tbody class="row-stagger">
+          {% for m in movements %}
+          <tr class="fade-up" style="transition-delay: {{ loop.index0 * 30 }}ms;">
+            <td><span class="badge bg-secondary">{{ m.movement_id }}</span></td>
+            <td class="text-muted">{{ m.timestamp }}</td>
+            <td>{{ m.product_id }}</td>
+            <td>{{ m.from_location or "-" }}</td>
+            <td>{{ m.to_location or "-" }}</td>
+            <td>{{ m.qty }}</td>
+          </tr>
+          {% else %}
+          <tr><td colspan="6" class="text-center text-muted">No movements</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}

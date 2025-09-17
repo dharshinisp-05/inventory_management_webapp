@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3 fade-up">
+    <h3 class="m-0 wiggle">Products</h3>
+    <a class="btn btn-primary hover-raise" href="{{ url_for('product_new') }}"><i class="bi bi-plus"></i> Add Product</a>
+  </div>
+
+  <div class="row g-3">
+    {% for p in products %}
+    <div class="col-12 col-sm-6 col-lg-4">
+      <div class="card h-100 fade-up hover-raise bounce-in glow" style="transition-delay: {{ loop.index0 * 40 }}ms;">
+        {% if p.image_url %}
+        <img src="{{ p.image_url }}" alt="{{ p.name }}" class="card-img-top" style="object-fit: cover; height: 180px; border-bottom:1px solid rgba(148,163,184,.15)">
+        {% else %}
+        <div class="d-flex align-items-center justify-content-center" style="height:180px; border-bottom:1px solid rgba(148,163,184,.15); background: rgba(148,163,184,.05)">
+          <i class="bi bi-image" style="font-size: 3rem; color:#64748b"></i>
+        </div>
+        {% endif %}
+        <div class="card-body">
+          <div class="d-flex align-items-start justify-content-between" style="color:#0f172a;">
+            <div>
+              <div class="small text-secondary">ID: <span class="badge bg-dark">{{ p.product_id }}</span></div>
+              <h5 class="mt-1 mb-2" style="color:#0f172a;">{{ p.name }}</h5>
+            </div>
+            <a class="btn btn-sm btn-outline-light" href="{{ url_for('product_edit', product_id=p.product_id) }}"><i class="bi bi-pencil"></i></a>
+          </div>
+          <p class="mb-0" style="min-height: 48px; color:#334155;">{{ p.description }}</p>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <div class="col-12">
+      <div class="card p-4 text-center text-muted fade-up">No products</div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <div class="card mt-3 fade-up" style="overflow:hidden;">
+    <div class="card-body p-0" style="height: 360px;">
+      <iframe
+        src="https://www.chatbase.co/chatbot-iframe/AaDWI9hbioCTeZo3tKkJ_"
+        width="100%"
+        style="height: 100%; min-height: 360px; border:0;"
+        frameborder="0">
+      </iframe>
+    </div>
+  </div>
+{% endblock %}

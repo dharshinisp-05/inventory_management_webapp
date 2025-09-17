@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center mb-3 fade-up">
+    <h3 class="m-0">Locations</h3>
+    <a class="btn btn-primary hover-raise" href="{{ url_for('location_new') }}"><i class="bi bi-plus"></i> Add Location</a>
+  </div>
+  <div class="card p-3 fade-up hover-raise">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle">
+        <thead><tr><th>ID</th><th>Name</th><th>Address</th><th style="width:120px">Actions</th></tr></thead>
+        <tbody class="row-stagger">
+          {% for l in locations %}
+          <tr class="fade-up" style="transition-delay: {{ loop.index0 * 40 }}ms;">
+            <td><span class="badge bg-secondary">{{ l.location_id }}</span></td>
+            <td>{{ l.name }}</td>
+            <td class="text-muted">{{ l.address }}</td>
+            <td>
+              <a class="btn btn-sm btn-outline-light" href="{{ url_for('location_edit', location_id=l.location_id) }}"><i class="bi bi-pencil"></i></a>
+            </td>
+          </tr>
+          {% else %}
+          <tr><td colspan="4" class="text-center text-muted">No locations</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock %}
