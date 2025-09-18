@@ -16,25 +16,21 @@ def create_app(test_config=None):
 
     db.init_app(app)
 
-    # Create tables at startup (Flask 3 removed before_first_request)
     with app.app_context():
         db.create_all()
-        # Lightweight migration: ensure image_url exists on product (SQLite only)
         try:
             cols = [row[1] for row in db.session.execute(text("PRAGMA table_info(product)"))]
             if 'image_url' not in cols:
                 db.session.execute(text("ALTER TABLE product ADD COLUMN image_url VARCHAR"))
                 db.session.commit()
         except Exception:
-            # Ignore if not SQLite or alteration not needed
             pass
 
-    # Home
+    
     @app.route('/')
     def index():
         return render_template('base.html')
 
-    # Products: list, add, edit, view
     @app.route('/products')
     def products():
         items = Product.query.order_by(Product.product_id).all()
@@ -67,7 +63,6 @@ def create_app(test_config=None):
             return redirect(url_for('products'))
         return render_template('product_form.html', form=form, edit=True)
 
-    # Locations
     @app.route('/locations')
     def locations():
         items = Location.query.order_by(Location.location_id).all()
@@ -98,7 +93,6 @@ def create_app(test_config=None):
             return redirect(url_for('locations'))
         return render_template('location_form.html', form=form, edit=True)
 
-    # Movements
     def _populate_movement_choices(form):
         products = Product.query.order_by(Product.product_id).all()
         form.product_id.choices = [(p.product_id, f"{p.product_id} - {p.name}") for p in products]
@@ -116,10 +110,8 @@ def create_app(test_config=None):
         all_locations = Location.query.order_by(Location.location_id).all()
         loc_suggestions = [(l.location_id, l.name) for l in all_locations]
         if form.validate_on_submit():
-            # coerce blank strings to None
             from_loc = form.from_location.data or None
             to_loc = form.to_location.data or None
-            # parse timestamp if provided
             ts = None
             if form.timestamp.data:
                 try:
@@ -143,32 +135,24 @@ def create_app(test_config=None):
             return redirect(url_for('movements'))
         return render_template('movement_form.html', form=form, loc_suggestions=loc_suggestions)
 
-    # Report: Balance quantity in each location (grid: Product, Warehouse, Qty)
     @app.route('/report')
     def report():
-        # Approach: For each product & location compute sum of qty where to_location==loc (in) minus sum where from_location==loc (out)
         products = Product.query.order_by(Product.product_id).all()
         locations = Location.query.order_by(Location.location_id).all()
 
-        # Build balances dict: {(product_id, location_id): qty}
         balances = {}
-        # initialize zeros
         for p in products:
             for loc in locations:
                 balances[(p.product_id, loc.location_id)] = 0
 
-        # process every movement
         all_moves = ProductMovement.query.order_by(ProductMovement.timestamp).all()
         for m in all_moves:
             pid = m.product_id
-            # if to_location present: add qty to that location
             if m.to_location:
                 balances[(pid, m.to_location)] = balances.get((pid, m.to_location), 0) + m.qty
-            # if from_location present: subtract qty from that location
             if m.from_location:
                 balances[(pid, m.from_location)] = balances.get((pid, m.from_location), 0) - m.qty
 
-        # create a viewable list of rows
         rows = []
         for (pid, lid), qty in balances.items():
             rows.append({
