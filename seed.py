@@ -9,7 +9,6 @@ app.app_context().push()
 db.drop_all()
 db.create_all()
 
-# create products
 prods = [
     Product(product_id="P-A", name="Product A", description="Sample A"),
     Product(product_id="P-B", name="Product B", description="Sample B"),
@@ -19,7 +18,6 @@ prods = [
 for p in prods:
     db.session.add(p)
 
-# create locations
 locs = [
     Location(location_id="L-X", name="Warehouse X", address="Location X addr"),
     Location(location_id="L-Y", name="Warehouse Y", address="Location Y addr"),
@@ -29,10 +27,8 @@ for l in locs:
     db.session.add(l)
 db.session.commit()
 
-# create about 20 movements
 moves = []
 t0 = datetime.utcnow()
-# add stock: move into L-X or L-Y from None
 for i in range(1, 8):
     moves.append(ProductMovement(
         movement_id=f"M-IN-{i}",
@@ -43,7 +39,6 @@ for i in range(1, 8):
         qty=10 + (i % 5)
     ))
 
-# internal transfers and removals
 for i in range(8, 21):
     moves.append(ProductMovement(
         movement_id=f"M-{i}",
