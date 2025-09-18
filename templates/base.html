@@ -27,7 +27,6 @@
     .navbar-brand { color:#2563eb !important; }
     .table thead th { color:#2563eb; }
     
-    /* Cartoonish floating shapes (light, subtle) */
     .bg-bubbles { position: fixed; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
     .bg-bubbles span { position: absolute; display: block; width: 22px; height: 22px; background: rgba(59,130,246,.12); border-radius: 8px; animation: float 18s linear infinite; box-shadow: 0 6px 16px rgba(59,130,246,.10); }
     .bg-bubbles span:nth-child(2) { width: 14px; height: 14px; background: rgba(34,197,94,.12); animation-duration: 22s; animation-delay: 2s; }
@@ -35,7 +34,6 @@
     .bg-bubbles span:nth-child(4) { width: 12px; height: 12px; background: rgba(99,102,241,.12); animation-duration: 26s; animation-delay: 6s; }
     .bg-bubbles span:nth-child(5) { width: 28px; height: 28px; background: rgba(14,165,233,.12); animation-duration: 28s; animation-delay: 8s; border-radius: 50%; }
     @keyframes float { 0% { transform: translateY(120vh) translateX(0) rotate(0); } 100% { transform: translateY(-20vh) translateX(30vw) rotate(360deg); } }
-    /* Animations */
     .fade-up { opacity:0; transform: translateY(12px); transition: opacity .6s ease, transform .6s ease; }
     .fade-up.show { opacity:1; transform: none; }
     .row-stagger > tr.fade-up { transition-duration: .7s; }
@@ -44,7 +42,6 @@
     .hover-raise:hover { transform: translateY(-2px) scale(1.01); box-shadow: 0 8px 20px rgba(2,6,23,.08); }
     .content-wrapper { position: relative; z-index: 1; }
 
-    /* Extra cartoonish animations */
     .wiggle { display: inline-block; }
     .wiggle:hover { animation: wiggle .4s ease-in-out; }
     @keyframes wiggle { 0%,100%{ transform: rotate(0deg);} 25%{ transform: rotate(2deg);} 75%{ transform: rotate(-2deg);} }
@@ -97,7 +94,6 @@
   </div>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    // Reveal on scroll
     const onReady = (fn) => document.readyState !== 'loading' ? fn() : document.addEventListener('DOMContentLoaded', fn);
     onReady(() => {
       const observer = new IntersectionObserver((entries) => {
@@ -105,7 +101,6 @@
       }, { threshold: 0.1 });
       document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
 
-      // Count-up numbers
       document.querySelectorAll('[data-count]')
         .forEach(el => {
           const target = parseFloat(el.getAttribute('data-count')) || 0;
