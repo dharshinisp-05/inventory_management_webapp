@@ -5,7 +5,7 @@ db = SQLAlchemy()
 
 class Product(db.Model):
     __tablename__ = "product"
-    product_id = db.Column(db.String, primary_key=True)  # text/varchar as requested
+    product_id = db.Column(db.String, primary_key=True) 
     name = db.Column(db.String, nullable=False)
     description = db.Column(db.String, nullable=True)
     image_url = db.Column(db.String, nullable=True)
@@ -31,7 +31,6 @@ class ProductMovement(db.Model):
     product_id = db.Column(db.String, db.ForeignKey("product.product_id"), nullable=False)
     qty = db.Column(db.Integer, nullable=False)
 
-    # relationships
     product = db.relationship("Product", backref="movements")
     from_loc = db.relationship("Location", foreign_keys=[from_location], backref="out_movements")
     to_loc = db.relationship("Location", foreign_keys=[to_location], backref="in_movements")
