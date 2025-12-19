@@ -33,9 +33,5 @@ For each movement:
 
 See `app.py` for implementation.
 
-## What to include in interview email
-- Link to GitHub repo
-- Short description: technologies used (Flask, SQLAlchemy, WTForms, SQLite)
-- Screenshots: product list, location list, movements list, balance report
-- Mention you can walk through code and add more features (filter, export CSV, authentication, pagination etc.)
+
 
